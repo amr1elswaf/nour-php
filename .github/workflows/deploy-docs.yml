@@ -1,0 +1,60 @@
+name: Deploy docs to GitHub Pages
+
+# Triggers:
+#   - push to main with changes under site/ or docs/
+#   - manual run via the "Run workflow" button
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'docs/**'
+      - '.github/workflows/deploy-docs.yml'
+  workflow_dispatch:
+
+# GitHub Pages permissions — required for the deploy-pages action.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Cancel in-flight runs when a new commit lands; only one deploy at a time.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Sync docs into site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Keep site/docs/ in sync with docs/ — single source of truth is the
+      # repo's `docs/` folder. Anyone who edits a `.md` file there gets it
+      # auto-published on the next push.
+      - name: Sync docs into site/docs
+        run: |
+          mkdir -p site/docs
+          rsync -av --delete docs/ site/docs/
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

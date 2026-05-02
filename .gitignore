@@ -1,0 +1,39 @@
+# Composer
+#/vendor/
+#/composer.lock
+
+# IDE
+/.idea/
+/.vscode/
+*.swp
+*.swo
+/.claude/
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts of the bundled binary_json PHP extension.
+# The source (`config.m4`, `configure.ac`, `php_binary_json.c`,
+# `php_binary_json.h`) is checked in; everything below is generated
+# by `phpize && ./configure && make`.
+#/src/extensions/php_binary_json/.libs/
+#/src/extensions/php_binary_json/autom4te.cache/
+#/src/extensions/php_binary_json/build/
+#/src/extensions/php_binary_json/include/
+#/src/extensions/php_binary_json/modules/
+#/src/extensions/php_binary_json/.deps
+#/src/extensions/php_binary_json/Makefile*
+#/src/extensions/php_binary_json/configure
+#/src/extensions/php_binary_json/configure~
+#/src/extensions/php_binary_json/config.h*
+#/src/extensions/php_binary_json/config.log
+#/src/extensions/php_binary_json/config.nice
+#/src/extensions/php_binary_json/config.status
+#/src/extensions/php_binary_json/libtool
+#/src/extensions/php_binary_json/install-sh
+#/src/extensions/php_binary_json/missing
+#/src/extensions/php_binary_json/run-tests.php
+#/src/extensions/php_binary_json/*.la
+#/src/extensions/php_binary_json/*.lo
+#/src/extensions/php_binary_json/*.o
+#/src/extensions/php_binary_json/*.dep

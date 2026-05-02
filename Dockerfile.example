@@ -1,0 +1,60 @@
+# Example Nour base image.
+#
+# Build:
+#     docker build -f Dockerfile.example -t nour-base:0.1 .
+#
+# Each host project then uses this image and mounts only its own
+# data/, app/, and vendor/ directories — see README.md "Docker image
+# build pattern" for the matching docker-compose.yml.
+
+FROM php:8.1-cli
+
+# ── System deps for Swoole + native exts ──────────────────────────────
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    autoconf \
+    build-essential \
+    libssl-dev \
+    libcurl4-openssl-dev \
+    libnghttp2-dev \
+    libbrotli-dev \
+    libpcre3-dev \
+    git \
+    unzip \
+ && rm -rf /var/lib/apt/lists/*
+
+# ── PHP extensions ────────────────────────────────────────────────────
+RUN docker-php-ext-install -j$(nproc) mysqli pcntl bcmath sockets opcache
+RUN pecl install redis && docker-php-ext-enable redis
+
+# OpenSwoole (>= 22 recommended)
+RUN pecl install openswoole \
+ && docker-php-ext-enable openswoole
+
+# ── Framework source ──────────────────────────────────────────────────
+COPY . /opt/nour
+WORKDIR /opt/nour
+
+# Build the bundled binary_json native extension
+RUN cd src/extensions/php_binary_json \
+ && phpize \
+ && ./configure \
+ && make -j$(nproc) \
+ && make install \
+ && docker-php-ext-enable binary_json
+
+# Composer (multi-stage avoids leaving the binary in the final image
+# in heavier setups; here we keep it for `composer require` in derived
+# images)
+RUN curl -sS https://getcomposer.org/installer \
+    | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# ── Runtime ───────────────────────────────────────────────────────────
+ENV NOUR_APP_DIR=/app
+WORKDIR /app
+
+# The host project mounts /app/data, /app/app, /app/vendor.
+# bin/server.php reads NOUR_APP_DIR and resolves vendor/autoload.php
+# from the mounted project (or falls back to the framework's own).
+ENTRYPOINT ["php", "/opt/nour/bin/server.php"]

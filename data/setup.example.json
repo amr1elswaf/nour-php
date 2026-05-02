@@ -1,0 +1,30 @@
+{
+    "name": "myapp",
+    "bootstrap": "App\\Bootstrap",
+
+    "services": {
+        "websocket": { "enabled": true,  "host": "0.0.0.0", "port": 9503 },
+        "http":      { "enabled": true,  "host": "0.0.0.0", "port": 9501 },
+        "webhook":   { "enabled": true,  "host": "0.0.0.0", "port": 9502 }
+    },
+
+    "swoole": {
+        "worker_num":         8,
+        "max_conn":           2000,
+        "max_request":        1000,
+        "task_worker_num":    2,
+        "task_enable_coroutine": true,
+        "task_max_request":   5000,
+        "package_max_length": 2097152,
+        "buffer_output_size": 3145728,
+        "socket_buffer_size": 2097152,
+        "websocket_compression": true,
+        "log_level":          1
+    },
+
+    "runtime": {
+        "memory_limit":       "3G",
+        "timezone":           "Africa/Cairo",
+        "socket_key":         "myapp:socket_system"
+    }
+}

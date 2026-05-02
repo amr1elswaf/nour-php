@@ -1,0 +1,58 @@
+{
+    "name": "nour/framework",
+    "description": "A mini framework on top of OpenSwoole — HTTP routing, WebSocket dispatch, MySQL/Redis pools, config-driven webhooks, all behind a small DI container.",
+    "type": "library",
+    "license": "Proprietary",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+
+    "require": {
+        "php":         "^8.1",
+        "ext-redis":   "*",
+        "ext-mysqli":  "*",
+        "ext-json":    "*",
+        "ext-openssl": "*"
+    },
+
+    "suggest": {
+        "ext-openswoole":  "Required at runtime — install openswoole >= 22.x, OR install ext-swoole >= 5.0 (the framework targets the `Swoole\\` namespace which both extensions provide)",
+        "ext-swoole":      "Alternative to ext-openswoole — install one of the two",
+        "ext-binary_json": "The bundled native extension at src/extensions/php_binary_json/. Required by the Redis KeyValue / Queue structures for compact serialisation. Build with `phpize && ./configure && make install`."
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Nour\\": "src/"
+        },
+        "files": [
+            "src/runtime.php"
+        ]
+    },
+
+    "autoload-dev": {
+        "psr-4": {
+            "Nour\\Tests\\": "tests/"
+        }
+    },
+
+    "bin": [
+        "bin/server.php"
+    ],
+
+    "authors": [
+        {
+            "name": "amr1elswaf",
+            "email": "amrelswaf456@gmail.com"
+        }
+    ],
+
+    "scripts": {
+        "lint": "find src -name '*.php' -print0 | xargs -0 -n1 php -l"
+    },
+
+    "extra": {
+        "branch-alias": {
+            "dev-main": "0.1.x-dev"
+        }
+    }
+}

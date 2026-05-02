@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nour Framework — Documentation</title>
+    <meta name="description" content="A small Swoole-based PHP framework for HTTP + WebSocket backends. Events, middleware, validation, plugins, and CLI.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <a href="#/" class="logo">
+                <span class="logo-mark">ن</span>
+                <span class="logo-text">Nour</span>
+                <span class="logo-version">0.2</span>
+            </a>
+        </div>
+        <nav class="topbar-nav">
+            <button class="lang-toggle" id="langToggle" aria-label="Switch language" title="Switch language">
+                <span id="langLabel">EN</span>
+            </button>
+            <a href="https://github.com/amr1elswaf/nour-php" id="ghLink" target="_blank" rel="noopener" class="nav-link" aria-label="GitHub">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            </a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <svg id="themeIconLight" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                <svg id="themeIconDark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+        </nav>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <nav>
+            <div class="nav-section">
+                <div class="nav-section-title">Overview</div>
+                <ul class="nav-list">
+                    <li><a href="#/" data-page="/">Introduction</a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Getting Started</div>
+                <ul class="nav-list">
+                    <li><a href="#/01-getting-started" data-page="/01-getting-started">Quick start</a></li>
+                    <li><a href="#/02-configuration"   data-page="/02-configuration">Configuration</a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Building</div>
+                <ul class="nav-list">
+                    <li><a href="#/03-routing"    data-page="/03-routing">Routing</a></li>
+                    <li><a href="#/04-middleware" data-page="/04-middleware">Middleware</a></li>
+                    <li><a href="#/05-events"     data-page="/05-events">Events</a></li>
+                    <li><a href="#/06-validation" data-page="/06-validation">Validation</a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Subsystems</div>
+                <ul class="nav-list">
+                    <li><a href="#/07-databases"           data-page="/07-databases">Databases</a></li>
+                    <li><a href="#/08-websocket"           data-page="/08-websocket">WebSocket</a></li>
+                    <li><a href="#/09-webhooks-and-timers" data-page="/09-webhooks-and-timers">Webhooks &amp; Timers</a></li>
+                    <li><a href="#/10-plugins"             data-page="/10-plugins">Plugins</a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Operations</div>
+                <ul class="nav-list">
+                    <li><a href="#/11-cli"        data-page="/11-cli">CLI</a></li>
+                    <li><a href="#/12-deployment" data-page="/12-deployment">Deployment</a></li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <main class="content-wrap">
+        <article id="content" class="content">
+            <div class="loading">Loading…</div>
+        </article>
+        <aside class="page-toc" id="pageToc" aria-label="On this page"></aside>
+    </main>
+
+    <footer class="footer">
+        <p>Nour Framework — open-source. Docs source: <code>docs/*.md</code> in the repo.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

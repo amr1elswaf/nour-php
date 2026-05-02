@@ -1,0 +1,87 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Nour CLI entry point.
+ *
+ * Usage:
+ *     nour <command> [arguments]
+ *     nour list                    — show all commands
+ *     nour help <command>          — show a command's signature
+ *     nour --version
+ *
+ * Bootstraps the framework's CLI subset: loads autoloaders, reads
+ * `data/sitting.json` + `data/setup.json` from `$NOUR_APP_DIR` (or
+ * the current directory), initialises DB/Redis pools, then dispatches
+ * to `Nour\Console\Application`.
+ *
+ * The full Swoole server bootstrap (`Nour\Server\Boot::run`) is NOT
+ * called from here — `nour serve` is the alias that starts the server.
+ */
+
+use Nour\Console\Application;
+use Nour\Console\CliBootstrap;
+use Nour\Console\Commands\CacheFlushCommand;
+use Nour\Console\Commands\IpBlockCommand;
+use Nour\Console\Commands\IpListCommand;
+use Nour\Console\Commands\IpUnblockCommand;
+use Nour\Console\Commands\MigrateCommand;
+use Nour\Console\Commands\MigrateRollbackCommand;
+use Nour\Console\Commands\MigrateStatusCommand;
+use Nour\Console\Commands\RouteListCommand;
+use Nour\Console\Commands\ServeCommand;
+use Nour\Console\Commands\TimerListCommand;
+use Nour\Console\Commands\WebhookListCommand;
+
+// Resolve the main folder. Priority:
+//   1. NOUR_APP_DIR env var (set by the Docker image)
+//   2. --app=<path> option
+//   3. current working directory
+$mainFolder = (string) (getenv('NOUR_APP_DIR') ?: '');
+foreach ($argv as $arg) {
+    if (str_starts_with((string) $arg, '--app=')) {
+        $mainFolder = substr((string) $arg, 6);
+    }
+}
+if ($mainFolder === '') {
+    $mainFolder = (string) getcwd();
+}
+
+// Load the framework autoload. `bin/nour` lives at the framework root,
+// so `__DIR__/../vendor/autoload.php` is the framework's vendor.
+$frameworkAutoload = __DIR__ . '/../vendor/autoload.php';
+if (!file_exists($frameworkAutoload)) {
+    fwrite(STDERR, "[nour] framework autoload not found: {$frameworkAutoload}\n");
+    exit(2);
+}
+require $frameworkAutoload;
+
+// App autoload — optional. The host project may have its own composer
+// vendor (App\ namespace, plugin classes, etc.). Try common locations.
+foreach (["{$mainFolder}/vendor/autoload.php", "{$mainFolder}/lib/vendor/autoload.php"] as $candidate) {
+    if (file_exists($candidate)) {
+        require $candidate;
+        break;
+    }
+}
+
+CliBootstrap::init($mainFolder);
+
+$app = new Application('nour', '0.2.0');
+
+// Register built-in commands.
+$app->register(new MigrateCommand());
+$app->register(new MigrateRollbackCommand());
+$app->register(new MigrateStatusCommand());
+$app->register(new RouteListCommand());
+$app->register(new WebhookListCommand());
+$app->register(new TimerListCommand());
+$app->register(new IpBlockCommand());
+$app->register(new IpUnblockCommand());
+$app->register(new IpListCommand());
+$app->register(new CacheFlushCommand());
+$app->register(new ServeCommand());
+
+exit($app->run($argv));
